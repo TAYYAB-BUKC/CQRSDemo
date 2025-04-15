@@ -1,7 +1,25 @@
 ﻿@page "/"
-
+@using CQRSDemo.Helper.Models
+@using CQRSDemo.Helper.Queries
+@inject MediatR.IMediator _mediatR
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+People list coming from the GetPersonListHandler
 
-Welcome to your new app.
+<ul>
+	@foreach(var person in People)
+	{
+		<li>
+			@person.FirstName @person.LastName
+		</li>
+	}
+</ul>
+
+@code{
+	public List<Person> People = new();
+
+	protected override async Task OnInitializedAsync()
+	{
+		People = await _mediatR.Send(new GetPersonListQuery());
+	}
+}
