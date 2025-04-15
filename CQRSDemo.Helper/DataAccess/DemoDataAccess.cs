@@ -2,7 +2,7 @@
 
 namespace CQRSDemo.Helper.DataAccess
 {
-    public class DemoDataAccess
+    public class DemoDataAccess : IDemoDataAccess
     {
         public List<Person> People = new();
 
