@@ -1,10 +1,15 @@
 using CQRSDemo.Client.Components;
+using CQRSDemo.Helper.DataAccess;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+builder.Services.AddSingleton<IDemoDataAccess, DemoDataAccess>();
+builder.Services.AddMediatR(
+    configure => configure.RegisterServicesFromAssemblyContaining(typeof(Program)));
 
 var app = builder.Build();
 
