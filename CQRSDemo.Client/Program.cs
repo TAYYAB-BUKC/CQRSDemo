@@ -1,3 +1,5 @@
+using System.Reflection;
+using System.Runtime.Loader;
 using CQRSDemo.Client.Components;
 using CQRSDemo.Helper.DataAccess;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,8 +10,18 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.AddSingleton<IDemoDataAccess, DemoDataAccess>();
-builder.Services.AddMediatR(
-    configure => configure.RegisterServicesFromAssemblyContaining(typeof(Program)));
+//builder.Services.AddMediatR(
+//    configure => configure.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+
+//var path = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+//var applicationAssembly = Directory.GetFiles(path, "CQRSDemo.Client.dll").Select(AssemblyLoadContext.Default.LoadFromAssemblyPath).FirstOrDefault();
+
+//builder.Services.AddMediatR(configuration =>
+//{
+//    configuration.RegisterServicesFromAssembly(applicationAssembly);
+//});
+
+builder.Services.AddMediatR(config => config.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
 
 var app = builder.Build();
 
