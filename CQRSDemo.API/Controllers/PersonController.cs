@@ -1,4 +1,6 @@
-﻿using CQRSDemo.Helper.Models;
+﻿using System.Threading.Tasks;
+using CQRSDemo.Helper.Commands;
+using CQRSDemo.Helper.Models;
 using CQRSDemo.Helper.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Components.Forms;
@@ -34,8 +36,9 @@ namespace CQRSDemo.API.Controllers
 
         // POST api/<PersonController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<Person> Post([FromBody] Person person)
         {
+            return await _mediator.Send(new InsertPersonCommand(person.FirstName, person.LastName));
         }
     }
 }
